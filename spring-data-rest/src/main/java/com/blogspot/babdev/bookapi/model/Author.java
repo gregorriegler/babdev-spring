@@ -7,12 +7,12 @@ import java.util.List;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
     public Integer getId() {

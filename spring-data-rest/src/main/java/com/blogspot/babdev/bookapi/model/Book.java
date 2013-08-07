@@ -3,30 +3,26 @@ package com.blogspot.babdev.bookapi.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import java.util.List;
 
 @Entity
 public class Book {
 
     @Id
-    private Long isbn;
+    private String isbn;
 
     private String title;
 
     private String language;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany
     private List<Author> authors;
 
-    @ManyToOne
-    private Publisher publisher;
-
-    public Long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(Long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
@@ -54,11 +50,4 @@ public class Book {
         this.authors = authors;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
 }
