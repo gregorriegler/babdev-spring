@@ -20,6 +20,22 @@ public class BookApiIT {
     private final String authorsUrl = "http://localhost:8080/authors";
     private final String booksUrl = "http://localhost:8080/books";
 
+    @Test
+    public void testCreateBookWithAuthor() throws Exception {
+        final URI authorUri = restTemplate.postForLocation(authorsUrl, sampleAuthor()); // create Author
+
+        final URI bookUri = new URI(booksUrl + "/" + sampleBookIsbn);
+        restTemplate.put(bookUri, sampleBook(authorUri.toString())); // create Book linked to Author
+
+        Resource<Book> book = getBook(bookUri);
+        assertNotNull(book);
+
+        final URI authorsOfBookUri = new URI(book.getLink("books.Book.authors").getHref());
+        Resource<List<Resource<Author>>> authors = getAuthors(authorsOfBookUri);
+        assertNotNull(authors.getContent());
+        assertFalse(authors.getContent().isEmpty()); // check if /books/0132350882/authors contains an author
+    }
+
     private String sampleAuthor() {
         return "{\"name\":\"Robert C. Martin\"}";
     }
@@ -38,21 +54,5 @@ public class BookApiIT {
     private Resource<List<Resource<Author>>> getAuthors(URI uri) {
         return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<List<Resource<Author>>>>() {
         }).getBody();
-    }
-
-    @Test
-    public void testCreateBookWithAuthor() throws Exception {
-        final URI authorUri = restTemplate.postForLocation(authorsUrl, sampleAuthor()); // create Author
-
-        final URI bookUri = new URI(booksUrl + "/" + sampleBookIsbn);
-        restTemplate.put(bookUri, sampleBook(authorUri.toString())); // create Book linked to Author
-
-        Resource<Book> book = getBook(bookUri);
-        assertNotNull(book);
-
-        final URI authorsOfBookUri = new URI(book.getLink("books.Book.authors").getHref());
-        Resource<List<Resource<Author>>> authors = getAuthors(authorsOfBookUri);
-        assertNotNull(authors.getContent());
-        assertFalse(authors.getContent().isEmpty()); // check if /books/0132350882/authors contains an author
     }
 }
