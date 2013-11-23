@@ -1,1 +1,37 @@
 examples of spring-framework from http://babdev.blogspot.co.at
+
+
+TroubleShooting :
+
+  Problem : 
+      STS gives an error, "Dynamic Web Module 3.0 requires Java 1.6 or newer”
+
+  Solution : 
+      http://qussay.com/2013/09/13/solving-dynamic-web-module-3-0-requires-java-1-6-or-newer-in-maven-projects/
+      
+      1) Check that your project is configured to use Java 1.7.
+      
+          Right click your project > Properties > Java Compiler and set “Compiler compliance level” to 1.7.
+        
+      2) Next select Project Facets > Java and set its version to 1.7
+      
+          If you didn’t find 1.7, add it to eclipse :
+          Navigate to eclipse Preferences > Java > Installed JREs, click Add, and locate your installed Java path.
+        
+      3) Open your project’s pom.xml and add this plugin tag
+
+          <build>
+              <plugins>
+                  <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>3.1</version>
+                  <configuration>
+                      <source>1.7</source>
+                      <target>1.7</target>
+                  </configuration>
+              </plugin>
+              </plugins>
+          </build>
+      
+      4) Finally, right click on your project > Maven > Update Project…
