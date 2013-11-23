@@ -1,5 +1,12 @@
 examples of spring-framework from http://babdev.blogspot.co.at
 
+To Build :
+  
+    Change to the sub project root directory, and issue the mvn package command.
+  
+    >cd <sub-project-root>
+    >mvn package 
+    
 
 TroubleShooting :
 
